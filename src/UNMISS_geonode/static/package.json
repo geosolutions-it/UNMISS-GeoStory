@@ -4,22 +4,23 @@
   "author": "GeoNode Developers",
   "description": "Static code and assets for UNMISS_geonode",
   "contributors": [
-    {
-    }
+    {}
   ],
   "scripts": {
-    "test": "jshint **.js"
+    "test": "jshint **.js",
+    "compile-less": "lessc -x less/site_base.less css/site_base.css"
   },
   "license": "BSD",
   "private": "false",
   "dependencies": {
+    "less": "^4.1.3"
   },
   "devDependencies": {
     "del": "*",
     "gulp": "^3.9.0",
-    "gulp-util": "*",
     "gulp-concat": "*",
     "gulp-less": "*",
+    "gulp-util": "*",
     "path": "*"
   }
 }
