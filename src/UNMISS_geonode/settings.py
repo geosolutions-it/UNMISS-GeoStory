@@ -150,3 +150,22 @@ if LDAP_ENABLED and 'geonode_ldap' not in INSTALLED_APPS:
 
 # Add your specific LDAP configuration after this comment:
 # https://docs.geonode.org/en/master/advanced/contrib/#configuration
+
+# Switch off the default basemaps
+for msbase in MAPSTORE_BASELAYERS:
+    msbase['visibility'] = False
+
+# Add UNMISS basemap to head and switch it on
+MAPSTORE_BASELAYERS = [
+    {
+        "type": "tileprovider",
+        "title": "UNMISS Basemap",
+        "provider": "custom",
+        "name": "",
+        "group": "background",
+        "visibility": True,
+        "url": "https://pro-ags1.dfs.un.org/arcgis/rest/services/UNMISS_Custom_Basemap_CVW/MapServer/tile/{z}/{y}/{x}",
+        "thumbURL": "https://unmiss.unmissions.org/sites/all/themes/unmpk/logo.png",
+    }
+] + MAPSTORE_BASELAYERS
+
