@@ -169,3 +169,19 @@ MAPSTORE_BASELAYERS = [
     }
 ] + MAPSTORE_BASELAYERS
 
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 14, 
+        }
+    },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    {'NAME': 'UNMISS_geonode.security.password_validators.UppercaseValidator', },
+    {'NAME': 'UNMISS_geonode.security.password_validators.NumberValidator', 
+        'OPTIONS': {
+            'min_digits': 1, 
+        } 
+    },
+    {'NAME': 'UNMISS_geonode.security.password_validators.LowercaseValidator', },
+    {'NAME': 'UNMISS_geonode.security.password_validators.SpecialCharsValidator', }
+]
