@@ -186,3 +186,17 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'UNMISS_geonode.security.password_validators.LowercaseValidator', },
     {'NAME': 'UNMISS_geonode.security.password_validators.SpecialCharsValidator', }
 ]
+
+# ADMIN_IP_WHITELIST property limits access as admin
+# to only whitelisted IP addresses.
+#
+# Empty list means 'allow all'
+#
+# If you need to limit admin access to some specific IPs
+# fill the list like below:
+#
+# ADMIN_IP_WHITELIST = ['192.168.1.158', '192.168.1.159']
+ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
+    else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
+if len(ADMIN_IP_WHITELIST) > 0:
+    MIDDLEWARE += ('UNMISS_geonode.security.middleware.AdminAllowedMiddleware',)
