@@ -164,7 +164,7 @@
           $('#main_search_purpose_input')[0].value = $('#main_search_input')[0].value;
       });
       var endpoint = '/api/v2/resources?filter{resource_type.in}=geostory&page_size=100';
-      var cardContainer = $('#geostories-home .geostory-list')
+      var cardContainer = $('#unmiss-geostories-home .geostory-list')
 
       function openStory(pk){
         window.location.href= `/apps/${pk}/view`
@@ -181,33 +181,7 @@
                 return cardContainer.append($failedMessage) 
               }
               return result.resources.forEach(function(res) {
-                  const $newCard = $(`<li class="geostory-list-item">
-                  <div role="button" class="gn-resource-card">
-                    <img
-                        class="card-img-top"
-                        src=${res.thumbnail_url}
-                    />
-                <div class="gn-resource-card-body-wrapper">
-                    <div class="card-body">
-                        <div class="card-title">
-                          <div>
-                              <i class="fa fa-book"></i><a href=${'/apps/' + res.pk + '/view'}>${res.title}</a>
-                          </div>
-                        </div>
-                    </div>
-                    <div class="gn-footer-wrapper">
-                        <p class="card-text gn-card-description">
-                            ${res.raw_abstract ? res.raw_abstract : '...'}
-                        </p>
-                        <a href=${'/apps/' + res.pk + '/view'} rel="noopener noreferrer">
-                        <button class="btn btn-primary">
-                          View
-                        </button>
-                      </a>
-                    </div>
-                </div>
-            </div>
-            </li>`)
+                  const $newCard = $(`<li><a href=${'/apps/' + res.pk + '/view'}>${res.title}</a></li>`)
             $newCard.click(function() {
               openStory(res.pk)
             })
