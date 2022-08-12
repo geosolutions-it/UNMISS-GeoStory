@@ -163,37 +163,66 @@
           $('#main_search_abstract_input')[0].value =$('#main_search_input')[0].value;
           $('#main_search_purpose_input')[0].value = $('#main_search_input')[0].value;
       });
-      var endpoint = '/api/v2/resources?filter{resource_type.in}=geostory&page_size=100';
+      var endpoint = '/api/v2/resources?filter{resource_type.in}=geostory&page_size=10';
       var cardContainer = $('#unmiss-geostories-home .geostory-list')
+      var paginationContainer = $('#unmiss-geostories-home .pagination')
 
       function openStory(pk){
         window.location.href= `/apps/${pk}/view`
       }
-      $.ajax({
-          method: 'GET',
-          url: endpoint,
-          contentType: "application/json",
-          dataType: 'json',
-          success: function(result){
+      function buildGeoStoriesList(url){
+        $.ajax({
+              url : url,
+              method: 'GET',
+              contentType: "application/json",
+              dataType: 'json',
+              success: function (result) {
               $('.spinning').remove()
-              if(result.resources?.length === 0) {
-                var $failedMessage = `<li class="error-message"><div>There are no Geostories to display.</div></li>`
-                return cardContainer.append($failedMessage) 
-              }
-              return result.resources.forEach(function(res) {
+              var $page_total = (result.total/result.page_size) > 1 ? Math.round(result.total/result.page_size) : 1
+              result.resources.forEach(function(res) {
                   const $newCard = $(`<li><a href=${'/apps/' + res.pk + '/view'}>${res.title}</a></li>`)
-            $newCard.click(function() {
-              openStory(res.pk)
-            })
-            cardContainer.append($newCard)
-          })
+                  $newCard.click(function() {
+                    openStory(res.pk)
+                  })
+                  cardContainer.append($newCard)
+                })
+            if(result.links.previous !== null){
+              paginationContainer.append($(`
+              <li>
+                <a onClick="paginationclick('${result.links.previous}');"><strong><i class="fa fa-angle-left"></i></strong></a>
+              </li>
+            `))
+            }
+            paginationContainer.append($(`
+            <li><a>{% trans "page" %} <span>${result.page}</span> {% trans "of" %} <span>${$page_total}</span></a>
+            </li>
+            `))
+            if(result.links.next !== null){
+              paginationContainer.append($(`
+                <li>
+                  <a onClick="paginationclick('${result.links.next}');"><strong><i class="fa fa-angle-right"></i></strong></a>
+                </li>
+              `))
+            }
+            paginationContainer.append($pagination)
+            return cardContainer, paginationContainer
           },
           error: function() {
-             $('.spinning').remove()
-             var $failedMessage = `<li class="error-message"><div>Could not fetch Geostories. Please try again later</div></li>`
-             cardContainer.append($failedMessage)
-          }
-      })
+            $('.spinning').remove()
+            var $failedMessage = `<li class="error-message"><div>Could not fetch Geostories. Please try again later</div></li>`
+            cardContainer.append($failedMessage)
+         }
+          });
+    }
+    buildGeoStoriesList(endpoint)
+    function paginationclick(url) {
+      if (url !== null){
+        cardContainer.empty()
+        paginationContainer.empty()
+        buildGeoStoriesList(url)
+    }
+  }
+
     </script>
 {{ block.super }}
 {% if DEBUG_STATIC %}
