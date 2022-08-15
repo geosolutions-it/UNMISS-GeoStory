@@ -178,7 +178,9 @@
               dataType: 'json',
               success: function (result) {
               $('.spinning').remove()
-              var $page_total = (result.total/result.page_size) > 1 ? Math.round(result.total/result.page_size) : 1
+              var $page_total = Math.ceil(result.total / result.page_size);
+              var $startCount = (result.page_size*result.page) - result.page_size + 1
+              cardContainer.attr("start", $startCount)
               result.resources.forEach(function(res) {
                   const $newCard = $(`<li><a href=${'/apps/' + res.pk + '/view'}>${res.title}</a></li>`)
                   $newCard.click(function() {
@@ -204,7 +206,6 @@
                 </li>
               `))
             }
-            paginationContainer.append($pagination)
             return cardContainer, paginationContainer
           },
           error: function() {
