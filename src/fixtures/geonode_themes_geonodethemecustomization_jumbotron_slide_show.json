@@ -1,0 +1,13 @@
+{
+"geonode_themes_geonodethemecustomization_jumbotron_slide_show": [
+	{
+		"id" : 1,
+		"geonodethemecustomization_id" : 1,
+		"jumbotronthemeslide_id" : 1
+	},
+	{
+		"id" : 2,
+		"geonodethemecustomization_id" : 1,
+		"jumbotronthemeslide_id" : 2
+	}
+]}
