@@ -35,4 +35,7 @@ urlpatterns = [
     url(r'^/?$',
         homepage,
         name='home'),
+    url(r'^about/$',
+        TemplateView.as_view(template_name='about.html'),
+        name='about'),
  ] + urlpatterns

@@ -1,0 +1,17 @@
+{% extends "geonode_base.html" %}
+{% load i18n %}
+
+{% block my_extra_right_tab %}
+  <li><a href="{% url "about" %}">{% trans "ABOUT" %}</a></li>
+{% endblock my_extra_right_tab %}
+
+{% block body_outer %}
+<div class="page-header">
+  <h2>{% trans "ABOUT UNMISS GEOSTORIES" %}</h2>
+</div>
+<div>
+    <p>The United Nations Mission works with the people of South Sudan to protect civilians and build durable peace. Almost 20,000 peacekeepers serve with the United Nations Mission in South Sudan (UNMISS) to protect civilians and build durable peace in the conflict-affected country.</p> </br>
+<p>The civilian, police, and military personnel from 73 countries carry out many duties under the mandate provided by the United Nations Security Council. Their work falls under four main pillars namely: Protection of Civilians; Creating conditions conducive to the delivery of humanitarian assistance; Supporting the implementation of the revitalized agreement and peace process; and Monitoring and investigating human rights.</p> </br>
+<p>UNMISS Geostories is a platform for sharing some of the stories related to the activities undertaken by the mission in the implementation of it is mandate with the sole purpose of informing and educating the public through a composition of maps, multimedia, and text. The selected Geostories are curated from different pillars of the mission and presented in form that provides an immersive story telling experience.
+</div>
+{% endblock %}
