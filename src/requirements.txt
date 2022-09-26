@@ -4,4 +4,3 @@
 # -e git+https://github.com/GeoNode/geonode-mapstore-client.git@3.3.x#egg=django_geonode_mapstore_client
 # -e git+https://github.com/GeoNode/geonode.git@3.3.x#egg=GeoNode
 GeoNode==3.3.1.post1
-django-markdownify-0.9.1 # this avoids AttributeError: module 'bleach.sanitizer' has no attribute 'ALLOWED_STYLES' 

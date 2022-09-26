@@ -195,8 +195,12 @@ def migrations(ctx):
 @task
 def statics(ctx):
     print("**************************statics*******************************")
-    ctx.run('mkdir -p /mnt/volumes/statics/{static,uploads}')
-    ctx.run(f"python manage.py collectstatic --noinput --settings={_localsettings()}", pty=True)
+    try:
+        ctx.run('mkdir -p /mnt/volumes/statics/{static,uploads}')
+        ctx.run(f"python manage.py collectstatic --noinput --settings={_localsettings()}", pty=True)
+    except Exception:
+        import traceback
+        traceback.print_exc()
 
 
 @task
@@ -238,6 +242,8 @@ def fixtures(ctx):
     ctx.run("python manage.py loaddata /tmp/default_site.json \
 --settings={0}".format(_localsettings()), pty=True)
     ctx.run("python manage.py loaddata /usr/src/UNMISS_geonode/fixtures/initial_data.json \
+--settings={0}".format(_localsettings()), pty=True)
+    ctx.run("python manage.py loaddata /usr/src/UNMISS_geonode/fixtures/unmiss_themes.json \
 --settings={0}".format(_localsettings()), pty=True)
     ctx.run("python manage.py set_all_layers_alternate \
 --settings={0}".format(_localsettings()), pty=True)
