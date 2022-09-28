@@ -277,19 +277,15 @@ p.gn-resource-status-text {
     border-style: solid;
 }
 
-.home .jumbotron .container .row {
-    margin-left:-7em;
-    margin-right:12em;
-}
-
-.home .jumbotron .container .row .seperator {
+@media only screen and (min-width: 992px) {
+    .home .jumbotron .container .row .seperator {
     border-left:#0076c0;
     border-left-style:solid;
-    padding-left:45px
+    padding-left:45px;
+}
 }
 
 .home .jumbotron:after {
-    margin-right: 5em;
     background-repeat: no-repeat;
     background-position: right;
     background-size: 50em;
@@ -303,4 +299,17 @@ footer {
 .error-message {
     margin: auto;
     margin-top: 30px;
+}
+
+.navbar-inverse .nav-container {
+    margin: 0 10px;
+}
+
+.nav-container .nav.navbar-nav.navbar-right {
+    background-color: white;
+}
+
+div.underline-text {
+    display: inherit;
+    text-decoration: underline;
 }

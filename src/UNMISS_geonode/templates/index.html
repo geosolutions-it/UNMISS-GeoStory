@@ -167,9 +167,6 @@
       var cardContainer = $('#unmiss-geostories-home .geostory-list')
       var paginationContainer = $('#unmiss-geostories-home .pagination')
 
-      function openStory(pk){
-        window.location.href= `/apps/${pk}/view`
-      }
       function buildGeoStoriesList(url){
         $.ajax({
               url : url,
@@ -182,10 +179,7 @@
               var $startCount = (result.page_size*result.page) - result.page_size + 1
               cardContainer.attr("start", $startCount)
               result.resources.forEach(function(res) {
-                  const $newCard = $(`<li><a href=${'/apps/' + res.pk + '/view'}>${res.title}</a></li>`)
-                  $newCard.click(function() {
-                    openStory(res.pk)
-                  })
+                  const $newCard = $(`<li><a href=${res.embed_url} target="_blank">${res.title}</a></li>`)
                   cardContainer.append($newCard)
                 })
             if(result.links.previous !== null){
