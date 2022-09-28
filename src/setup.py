@@ -29,7 +29,7 @@ def read(*rnames):
 
 setup(
     name="UNMISS_geonode",
-    version="3.3.0",
+    version="3.3.1",
     author="",
     author_email="",
     description="UNMISS_geonode, based on GeoNode",
