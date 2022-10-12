@@ -46,7 +46,7 @@ if not SITEURL.endswith('/'):
 
 SITENAME = os.getenv("SITENAME", 'UNMISS_geonode')
 
-ALLOWED_HOSTS = ['localhost','django','southsudanmaps-dev.un.org']
+ALLOWED_HOSTS = ['southsudanmaps-dev.un.org']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 SESSION_COOKIE_SECURE = ast.literal_eval(os.environ.get('SESSION_COOKIE_SECURE', 'True'))
 CSRF_COOKIE_SECURE = ast.literal_eval(os.environ.get('CSRF_COOKIE_SECURE', 'True'))
@@ -199,4 +199,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
+    print("ACTIVATING ADMIN WHITELISTING")
+    AUTHENTICATION_BACKENDS = ('UNMISS_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
     MIDDLEWARE += ('UNMISS_geonode.security.middleware.AdminAllowedMiddleware',)

@@ -1,3 +1,4 @@
+import re
 import ipaddress
 import logging
 import traceback
@@ -19,11 +20,13 @@ logger = logging.getLogger(__name__)
 
 def visitor_ip_address(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
+    ip = None
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[0]
     else:
         ip = request.META.get('REMOTE_ADDR')
+    if ip:
+        ip = re.match(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})', ip)[0]
     return ip
 
 
@@ -74,9 +77,10 @@ class AdminAllowedMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def process_request(self, request):
+        print("------------- Whitelist middleware ------------")
         whitelist = getattr(settings, 'ADMIN_IP_WHITELIST', [])
         if len(whitelist) > 0:
-
+            print(f"ADMIN WHIELIST: {whitelist}")
             user = None
 
             if request.method == 'POST':
@@ -90,6 +94,7 @@ class AdminAllowedMiddleware(MiddlewareMixin):
 
             if user and user.is_superuser:
                 visitor_ip = visitor_ip_address(request)
+                print(f"REQUEST FROM {visitor_ip} ARRIVED")
                 in_whitelist = False
                 if visitor_ip:
                     visitor_ipaddress = ipaddress.ip_address(visitor_ip)
@@ -105,7 +110,7 @@ class AdminAllowedMiddleware(MiddlewareMixin):
                         if getattr(request, "session", None):
                             logout(request)
                         if getattr(request, "user", None):
-                            request.user = None
+                            request.user = AnonymousUser()
                         if "HTTP_AUTHORIZATION" in request.META:
                             del request.META["HTTP_AUTHORIZATION"]
                         if "apikey" in request.GET:
