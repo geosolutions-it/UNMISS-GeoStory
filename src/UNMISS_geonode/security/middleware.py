@@ -77,10 +77,8 @@ class AdminAllowedMiddleware(MiddlewareMixin):
         self.get_response = get_response
 
     def process_request(self, request):
-        print("------------- Whitelist middleware ------------")
         whitelist = getattr(settings, 'ADMIN_IP_WHITELIST', [])
         if len(whitelist) > 0:
-            print(f"ADMIN WHIELIST: {whitelist}")
             user = None
 
             if request.method == 'POST':
@@ -94,7 +92,6 @@ class AdminAllowedMiddleware(MiddlewareMixin):
 
             if user and user.is_superuser:
                 visitor_ip = visitor_ip_address(request)
-                print(f"REQUEST FROM {visitor_ip} ARRIVED")
                 in_whitelist = False
                 if visitor_ip:
                     visitor_ipaddress = ipaddress.ip_address(visitor_ip)

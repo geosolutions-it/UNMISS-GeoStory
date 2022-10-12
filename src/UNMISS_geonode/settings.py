@@ -199,6 +199,5 @@ AUTH_PASSWORD_VALIDATORS = [
 ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
-    print("ACTIVATING ADMIN WHITELISTING")
     AUTHENTICATION_BACKENDS = ('UNMISS_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
     MIDDLEWARE += ('UNMISS_geonode.security.middleware.AdminAllowedMiddleware',)
