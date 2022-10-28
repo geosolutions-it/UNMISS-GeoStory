@@ -116,7 +116,7 @@ class AdminAllowedMiddleware(MiddlewareMixin):
                         try:
                             from django.contrib import messages
                             from django.utils.translation import ugettext_noop as _
-                            messages.warning(request, _("Admin access forbidden from {visitor_ip}"))
+                            messages.warning(request, _(f"Admin access forbidden from {visitor_ip}"))
                         except Exception:
                             pass
-        return self.get_response(request)
+

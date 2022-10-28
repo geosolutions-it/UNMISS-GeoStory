@@ -37,19 +37,18 @@ def visitor_ip_address(request):
 
 def is_ipaddress_in_whitelist(visitor_ip, whitelist):
     # Chech if an IP is in the whitelisted IP ranges
-    in_whitelist = True
-    if not visitor_ip:
-        in_whitelist = False
+    print(f"TESTING VISITOR IP {visitor_ip}")
     if visitor_ip and whitelist and len(whitelist) > 0:
         visitor_ipaddress = ipaddress.ip_address(visitor_ip)
         for wip in whitelist:
             try:
-                if visitor_ipaddress not in ipaddress.ip_network(wip):
-                    in_whitelist = False
-                    break
-            except Exception:
-                in_whitelist = False
-    return in_whitelist
+                print(f"Testin {type(visitor_ipaddress)} in {type(ipaddress.ip_network(wip))}")
+                if visitor_ipaddress in ipaddress.ip_network(wip):
+                    print("NOT IN WHITELIST")
+                    return True
+            except Exception as e:
+                pass
+    return False
 
 
 # This backend only raises a permission deined id admin access is forbidden
@@ -59,8 +58,11 @@ class AdminRestrictedAccessBackend(ModelBackend):
         user = super().authenticate(request, username, password, **kwargs)
         if request:
             whitelist = getattr(settings, 'ADMIN_IP_WHITELIST', [])
+            print(f"BACKEND - WHITELIST {whitelist}")
             if user and user.is_superuser and len(whitelist) > 0:
+                print(f"BACKEND - USER {user}")
                 visitor_ip = visitor_ip_address(request)
                 if not is_ipaddress_in_whitelist(visitor_ip, whitelist):
+                    print("BACKEND - YOU CANNOT LOGIN!!!!")
                     raise PermissionDenied
 
