@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
+{% load base_tags %}
+{% load avatar_tags %}
 {% block extra_head %}
       <link href="{{ STATIC_URL }}css/site_base.css" rel="stylesheet"/>
 {% endblock %}
@@ -92,10 +95,6 @@ Add Tab for Third Party Apps
               </ul>
           </li>
           {% endif %}
-
-          {% block extra_tab %}
-
-          {% endblock %}
 
           {% endblock %}
 
