@@ -32,8 +32,8 @@ def run_setup_hooks(*args, **kwargs):
 
 class AppConfig(BaseAppConfig):
 
-    name = "UNMISS_geonode"
-    label = "UNMISS_geonode"
+    name = "unmiss_geonode"
+    label = "unmiss_geonode"
 
     def ready(self):
         super(AppConfig, self).ready()

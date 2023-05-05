@@ -1,7 +1,7 @@
 #!/bin/sh
 # ##########################################################
 # Run a backup
-#  SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./UNMISS_geonode/br/backup.sh $BKP_FOLDER_NAME
+#  SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./unmiss_geonode/br/backup.sh $BKP_FOLDER_NAME
 #   - BKP_FOLDER_NAME:
 #     Default value = backup_restore
 #     Shared Backup Folder name.
@@ -14,14 +14,14 @@
 #     Target Server URL, the one which must be synched.
 #
 # e.g.:
-#  docker exec -it django4UNMISS_geonode sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./UNMISS_geonode/br/backup.sh $BKP_FOLDER_NAME'
+#  docker exec -it django4unmiss_geonode sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./unmiss_geonode/br/backup.sh $BKP_FOLDER_NAME'
 # ##########################################################
 
 # Exit script in case of error
 set -e
 
 echo "-----------------------------------------------------"
-echo "STARTING UNMISS_geonode BACKUP $(date)"
+echo "STARTING unmiss_geonode BACKUP $(date)"
 echo "-----------------------------------------------------"
 
 if [ "$1" != "" ]; then
@@ -30,9 +30,9 @@ else
     BKP_FOLDER_NAME="backup_restore"
 fi
 
-cd /usr/src/UNMISS_geonode/ 
+cd /usr/src/unmiss_geonode/ 
 
-./manage.sh backup -i -f -c $PWD/UNMISS_geonode/br/settings_docker.ini --backup-dir /$BKP_FOLDER_NAME/
+./manage.sh backup -i -f -c $PWD/unmiss_geonode/br/settings_docker.ini --backup-dir /$BKP_FOLDER_NAME/
 
 BKP_FILE_LATEST=$(find /$BKP_FOLDER_NAME/*.zip -type f -exec stat -c '%Y %n' {} \; | sort -nr | awk 'NR==1,NR==1 {print $2}')
 BKP_FILE_NAME=$(echo $BKP_FILE_LATEST | tail -n 1 | grep -oP -m 1 "\/$BKP_FOLDER_NAME\/\K.*" | sed 's|.zip||')

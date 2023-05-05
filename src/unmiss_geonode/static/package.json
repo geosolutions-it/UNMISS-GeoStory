@@ -1,26 +1,25 @@
 {
-  "name": "UNMISS_geonode",
+  "name": "unmiss_geonode",
   "version": "0.0.1",
   "author": "GeoNode Developers",
-  "description": "Static code and assets for UNMISS_geonode",
+  "description": "Static code and assets for unmiss_geonode",
   "contributors": [
-    {}
+    {
+    }
   ],
   "scripts": {
-    "test": "jshint **.js",
-    "compile-less": "lessc -x less/site_base.less css/site_base.css"
+    "test": "jshint **.js"
   },
   "license": "BSD",
   "private": "false",
   "dependencies": {
-    "less": "^4.1.3"
   },
   "devDependencies": {
     "del": "*",
     "gulp": "^3.9.0",
+    "gulp-util": "*",
     "gulp-concat": "*",
     "gulp-less": "*",
-    "gulp-util": "*",
     "path": "*"
   }
 }

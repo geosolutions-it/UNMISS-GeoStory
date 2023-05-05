@@ -45,7 +45,7 @@ def waitfordbs(ctx):
 @task
 def waitforgeoserver(ctx):
     print("****************************geoserver********************************")
-    while not _rest_api_availability(f"{os.environ['GEOSERVER_LOCATION']}rest"):
+    while not _gs_service_availability(f"{os.environ['GEOSERVER_LOCATION']}ows"):
         print("Wait for GeoServer API availability...")
     print("GeoServer is available for HTTP calls!")
 
@@ -63,13 +63,13 @@ def update(ctx):
         pub_port = None
     db_url = _update_db_connstring()
     geodb_url = _update_geodb_connstring()
-    service_ready = False
-    while not service_ready:
+    geonode_docker_host = None
+    for _cnt in range(1,29):
         try:
-            socket.gethostbyname('geonode')
-            service_ready = True
+            geonode_docker_host = str(socket.gethostbyname("geonode"))
         except Exception:
-            time.sleep(10)
+            print(f"...waiting for NGINX to pop-up...{_cnt}")
+            time.sleep(1)
 
     override_env = "$HOME/.override_env"
     if os.path.exists(override_env):
@@ -86,7 +86,7 @@ def update(ctx):
     envs = {
         "local_settings": str(_localsettings()),
         "siteurl": os.environ.get('SITEURL', siteurl),
-        "geonode_docker_host": str(socket.gethostbyname('geonode')),
+        "geonode_docker_host": geonode_docker_host,
         "public_protocol": pub_protocol,
         "public_fqdn": str(pub_ip) + str(f':{pub_port}' if pub_port else ''),
         "public_host": str(pub_ip),
@@ -241,13 +241,11 @@ def fixtures(ctx):
 --settings={0}".format(_localsettings()), pty=True)
     ctx.run("python manage.py loaddata /tmp/default_site.json \
 --settings={0}".format(_localsettings()), pty=True)
-    ctx.run("python manage.py loaddata /usr/src/UNMISS_geonode/fixtures/initial_data.json \
+    ctx.run("python manage.py loaddata /usr/src/unmiss_geonode/fixtures/initial_data.json \
 --settings={0}".format(_localsettings()), pty=True)
-    ctx.run("python manage.py loaddata /usr/src/UNMISS_geonode/fixtures/unmiss_themes.json \
+    ctx.run("python manage.py set_all_datasets_alternate \
 --settings={0}".format(_localsettings()), pty=True)
-    ctx.run("python manage.py set_all_layers_alternate \
---settings={0}".format(_localsettings()), pty=True)
-#     ctx.run("python manage.py set_all_layers_metadata -d \
+#     ctx.run("python manage.py set_all_datasets_metadata -d \
 # --settings={0}".format(_localsettings()), pty=True)
 
 
@@ -368,11 +366,11 @@ def _update_geodb_connstring():
 
 
 def _localsettings():
-    settings = os.getenv('DJANGO_SETTINGS_MODULE', 'UNMISS_geonode.settings')
+    settings = os.getenv('DJANGO_SETTINGS_MODULE', 'unmiss_geonode.settings')
     return settings
 
 
-def _rest_api_availability(url):
+def _gs_service_availability(url):
     import requests
     try:
         r = requests.request('get', url, verify=False)

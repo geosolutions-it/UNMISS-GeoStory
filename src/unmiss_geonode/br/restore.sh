@@ -1,7 +1,7 @@
 #!/bin/sh
 # ##########################################################
 # Run a restore
-#  SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./UNMISS_geonode/br/restore.sh $BKP_FOLDER_NAME
+#  SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./unmiss_geonode/br/restore.sh $BKP_FOLDER_NAME
 #   - BKP_FOLDER_NAME:
 #     Default value = backup_restore
 #     Shared Backup Folder name.
@@ -14,14 +14,14 @@
 #     Target Server URL, the one which must be synched.
 #
 # e.g.:
-#  docker exec -it django4UNMISS_geonode sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./UNMISS_geonode/br/restore.sh $BKP_FOLDER_NAME'
+#  docker exec -it django4unmiss_geonode sh -c 'SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./unmiss_geonode/br/restore.sh $BKP_FOLDER_NAME'
 # ##########################################################
 
 # Exit script in case of error
 set -e
 
 echo "-----------------------------------------------------"
-echo "STARTING UNMISS_geonode RESTORE $(date)"
+echo "STARTING unmiss_geonode RESTORE $(date)"
 echo "-----------------------------------------------------"
 
 if [ "$1" != "" ]; then
@@ -41,7 +41,7 @@ else
     echo "$SOURCE_URL --> $TARGET_URL"
 fi
 
-cd /usr/src/UNMISS_geonode/
+cd /usr/src/unmiss_geonode/
 
 echo "-----------------------------------------------------"
 echo " 1. BACKUP $TARGET_URL"
@@ -49,7 +49,7 @@ echo "-----------------------------------------------------"
 
 NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 mkdir /$BKP_FOLDER_NAME/$NEW_UUID/
-SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./UNMISS_geonode/br/backup.sh $BKP_FOLDER_NAME/$NEW_UUID
+SOURCE_URL=$SOURCE_URL TARGET_URL=$TARGET_URL ./unmiss_geonode/br/backup.sh $BKP_FOLDER_NAME/$NEW_UUID
 
 echo "-----------------------------------------------------"
 echo " 2. CHECK BACKUP.md5 $TARGET_URL"
@@ -73,7 +73,7 @@ if md5sum -c /$BKP_FOLDER_NAME/$NEW_UUID/$BKP_FILE_NAME.md5; then
         # The MD5 sum matched
         ./manage.sh restore -l -n -f --backup-file /$BKP_FOLDER_NAME/$BKP_FILE_NAME.zip --recovery-file /$BKP_FOLDER_NAME/$NEW_UUID/$RECOVERY_FILE_NAME.zip
         ./manage.sh migrate_baseurl -f --source-address=$SOURCE_URL --target-address=$TARGET_URL
-        ./manage.sh set_all_layers_metadata -d -i
+        ./manage.sh set_all_datasets_metadata -d -i
     else
         # The MD5 sum didn't match
         echo "-----------------------------------------------------"
@@ -93,5 +93,5 @@ fi
 
 echo "-----------------------------------------------------"
 echo " - Original Backup of $TARGET_URL --> /$BKP_FOLDER_NAME/$NEW_UUID/"
-echo "FINISHED UNMISS_geonode RESTORE $(date)"
+echo "FINISHED unmiss_geonode RESTORE $(date)"
 echo "-----------------------------------------------------"

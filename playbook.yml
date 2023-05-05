@@ -2,15 +2,15 @@
   hosts: production
   remote_user: ubuntu
   vars:
-    app_name: UNMISS_geonode
+    app_name: unmiss_geonode
     github_user: geonode
     server_name: 0.0.0.0
     deploy_user: ubuntu
-    code_repository: https://github.com/-----/UNMISS_geonode.git" # e.g., "https://github.com/GeoNode/UNMISS_geonode.git"
-    branch_name: 3.3.x
+    code_repository: https://github.com/-----/unmiss_geonode.git" # e.g., "https://github.com/GeoNode/unmiss_geonode.git"
+    branch_name: master
     virtualenv_dir: "/home/ubuntu/.venvs"
     site_url: "http://localhost:8000/" # The public url of the GeoNode instance
-    geoserver_url: "https://artifacts.geonode.org/geoserver/2.19.x/geoserver.war" # geoserver_url should match what is found in dev_config.yml
+    geoserver_url: "https://artifacts.geonode.org/geoserver/2.20.6/geoserver.war" # geoserver_url should match what is found in dev_config.yml
     pg_max_connections: 100
     pg_shared_buffers: 128MB
     tomcat_xms: "1024M"

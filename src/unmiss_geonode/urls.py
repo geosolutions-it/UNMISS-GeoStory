@@ -18,14 +18,13 @@
 #
 #########################################################################
 
-import os
+from geonode.urls import urlpatterns
 
-__version__ = (3, 3, 1, 'final', 0)
-
-
-default_app_config = "UNMISS_geonode.apps.AppConfig"
-
-
-def get_version():
-    import UNMISS_geonode.version
-    return UNMISS_geonode.version.get_version(__version__)
+'''
+# You can register your own urlpatterns here
+urlpatterns = [
+    url(r'^/?$',
+        homepage,
+        name='home'),
+ ] + urlpatterns
+'''
