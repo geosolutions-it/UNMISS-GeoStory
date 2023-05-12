@@ -46,7 +46,7 @@ if not SITEURL.endswith('/'):
 
 SITENAME = os.getenv("SITENAME", 'unmiss_geonode')
 
-ALLOWED_HOSTS = ['southsudanmaps-dev.un.org']
+ALLOWED_HOSTS = ['*']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 SESSION_COOKIE_SECURE = ast.literal_eval(os.environ.get('SESSION_COOKIE_SECURE', 'True'))
 CSRF_COOKIE_SECURE = ast.literal_eval(os.environ.get('CSRF_COOKIE_SECURE', 'True'))
@@ -200,4 +200,4 @@ ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
     AUTHENTICATION_BACKENDS = ('unmiss_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
-    MIDDLEWARE += ('unmiss_geonode.security.middleware.AdminAllowedMiddleware',)
+    MIDDLEWARE += ('geonode.security.middleware.AdminAllowedMiddleware',)
