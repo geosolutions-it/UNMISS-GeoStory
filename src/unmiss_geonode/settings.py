@@ -46,7 +46,7 @@ if not SITEURL.endswith('/'):
 
 SITENAME = os.getenv("SITENAME", 'unmiss_geonode')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['southsudanmaps-dev.un.org']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 SESSION_COOKIE_SECURE = ast.literal_eval(os.environ.get('SESSION_COOKIE_SECURE', 'True'))
 CSRF_COOKIE_SECURE = ast.literal_eval(os.environ.get('CSRF_COOKIE_SECURE', 'True'))
