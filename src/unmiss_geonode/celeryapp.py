@@ -18,24 +18,24 @@
 #
 #########################################################################
 
-from django.conf.urls import url, include
-from django.views.generic import TemplateView
+from __future__ import absolute_import
 
-from geonode.urls import urlpatterns
-from geonode.base import register_url_event
+import os
+from celery import Celery
 
-urlpatterns += [
-## include your urls here
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'unmiss_geonode.settings')
 
-]
+app = Celery('unmiss_geonode')
 
-homepage = register_url_event()(TemplateView.as_view(template_name='site_index.html'))
+# Using a string here means the worker will not have to
+# pickle the object when using Windows.
+app.config_from_object('django.conf:settings', namespace="CELERY")
+app.autodiscover_tasks()
 
-urlpatterns = [
-    url(r'^/?$',
-        homepage,
-        name='home'),
-    url(r'^about/$',
-        TemplateView.as_view(template_name='about.html'),
-        name='about'),
- ] + urlpatterns
+
+@app.task(
+    bind=True,
+    name='unmiss_geonode.debug_task',
+    queue='default')
+def debug_task(self):
+    print("Request: {!r}".format(self.request))

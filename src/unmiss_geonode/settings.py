@@ -30,7 +30,7 @@ except ImportError:
     from urlparse import urlparse, urlunparse
 # Load more settings from a file called local_settings.py if it exists
 try:
-    from UNMISS_geonode.local_settings import *
+    from unmiss_geonode.local_settings import *
 #    from geonode.local_settings import *
 except ImportError:
     from geonode.settings import *
@@ -38,13 +38,13 @@ except ImportError:
 #
 # General Django development settings
 #
-PROJECT_NAME = 'UNMISS_geonode'
+PROJECT_NAME = 'unmiss_geonode'
 
 # add trailing slash to site url. geoserver url will be relative to this
 if not SITEURL.endswith('/'):
     SITEURL = '{}/'.format(SITEURL)
 
-SITENAME = os.getenv("SITENAME", 'UNMISS_geonode')
+SITENAME = os.getenv("SITENAME", 'unmiss_geonode')
 
 ALLOWED_HOSTS = ['southsudanmaps-dev.un.org']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
@@ -177,14 +177,14 @@ AUTH_PASSWORD_VALIDATORS = [
         }
     },
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
-    {'NAME': 'UNMISS_geonode.security.password_validators.UppercaseValidator', },
-    {'NAME': 'UNMISS_geonode.security.password_validators.NumberValidator', 
+    {'NAME': 'unmiss_geonode.security.password_validators.UppercaseValidator', },
+    {'NAME': 'unmiss_geonode.security.password_validators.NumberValidator', 
         'OPTIONS': {
             'min_digits': 1, 
         } 
     },
-    {'NAME': 'UNMISS_geonode.security.password_validators.LowercaseValidator', },
-    {'NAME': 'UNMISS_geonode.security.password_validators.SpecialCharsValidator', }
+    {'NAME': 'unmiss_geonode.security.password_validators.LowercaseValidator', },
+    {'NAME': 'unmiss_geonode.security.password_validators.SpecialCharsValidator', }
 ]
 
 # ADMIN_IP_WHITELIST property limits access as admin
@@ -199,5 +199,5 @@ AUTH_PASSWORD_VALIDATORS = [
 ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
-    AUTHENTICATION_BACKENDS = ('UNMISS_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
-    MIDDLEWARE += ('UNMISS_geonode.security.middleware.AdminAllowedMiddleware',)
+    AUTHENTICATION_BACKENDS = ('unmiss_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
+    MIDDLEWARE += ('geonode.security.middleware.AdminAllowedMiddleware',)

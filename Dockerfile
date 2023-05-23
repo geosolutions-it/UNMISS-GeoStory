@@ -1,7 +1,7 @@
-FROM python:3.8.9-buster
+FROM python:3.10.2-buster
 LABEL GeoNode development team
 
-RUN mkdir -p /usr/src/UNMISS_geonode
+RUN mkdir -p /usr/src/unmiss_geonode
 
 # Enable postgresql-client-13
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main" | tee /etc/apt/sources.list.d/pgdg.list
@@ -45,8 +45,8 @@ RUN pip install pylibmc \
     && pip install sherlock
 
 # add bower and grunt command
-COPY src /usr/src/UNMISS_geonode/
-WORKDIR /usr/src/UNMISS_geonode
+COPY src /usr/src/unmiss_geonode/
+WORKDIR /usr/src/unmiss_geonode
 
 COPY src/monitoring-cron /etc/cron.d/monitoring-cron
 RUN chmod 0644 /etc/cron.d/monitoring-cron
@@ -56,8 +56,8 @@ RUN service cron start
 
 COPY src/wait-for-databases.sh /usr/bin/wait-for-databases
 RUN chmod +x /usr/bin/wait-for-databases
-RUN chmod +x /usr/src/UNMISS_geonode/tasks.py \
-    && chmod +x /usr/src/UNMISS_geonode/entrypoint.sh
+RUN chmod +x /usr/src/unmiss_geonode/tasks.py \
+    && chmod +x /usr/src/unmiss_geonode/entrypoint.sh
 
 COPY src/celery.sh /usr/bin/celery-commands
 RUN chmod +x /usr/bin/celery-commands
@@ -65,14 +65,14 @@ RUN chmod +x /usr/bin/celery-commands
 COPY src/celery-cmd /usr/bin/celery-cmd
 RUN chmod +x /usr/bin/celery-cmd
 
-# Install "geonode-contribs" apps
-RUN cd /usr/src; git clone https://github.com/GeoNode/geonode-contribs.git -b master
-# Install logstash and centralized dashboard dependencies
-RUN cd /usr/src/geonode-contribs/geonode-logstash; pip install --upgrade  -e . \
-    cd /usr/src/geonode-contribs/ldap; pip install --upgrade  -e .
+# # Install "geonode-contribs" apps
+# RUN cd /usr/src; git clone https://github.com/GeoNode/geonode-contribs.git -b master
+# # Install logstash and centralized dashboard dependencies
+# RUN cd /usr/src/geonode-contribs/geonode-logstash; pip install --upgrade  -e . \
+#     cd /usr/src/geonode-contribs/ldap; pip install --upgrade  -e .
 
-RUN pip install --upgrade --src /usr/src -r requirements.txt
-RUN pip install --upgrade -e .
+RUN pip install --upgrade --no-cache-dir  --src /usr/src -r requirements.txt
+RUN pip install --upgrade  -e .
 
 # Cleanup apt update lists
 RUN rm -rf /var/lib/apt/lists/*
@@ -81,4 +81,4 @@ RUN rm -rf /var/lib/apt/lists/*
 EXPOSE 8000
 
 # We provide no command or entrypoint as this image can be used to serve the django project or run celery tasks
-# ENTRYPOINT /usr/src/UNMISS_geonode/entrypoint.sh
+# ENTRYPOINT /usr/src/unmiss_geonode/entrypoint.sh

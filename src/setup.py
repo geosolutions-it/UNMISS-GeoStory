@@ -28,11 +28,11 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(
-    name="UNMISS_geonode",
-    version="3.3.1",
+    name="unmiss_geonode",
+    version="4.0.0",
     author="",
     author_email="",
-    description="UNMISS_geonode, based on GeoNode",
+    description="unmiss_geonode, based on GeoNode",
     long_description=(read('README.md')),
     # Full list of classifiers can be found at:
     # http://pypi.python.org/pypi?%3Aaction=list_classifiers
@@ -40,11 +40,11 @@ setup(
         'Development Status :: 1 - Planning',
     ],
     license="GPL",
-    keywords="UNMISS_geonode geonode django",
-    url='https://github.com/UNMISS_geonode/UNMISS_geonode',
+    keywords="unmiss_geonode geonode django",
+    url='https://github.com/unmiss_geonode/unmiss_geonode',
     packages=find_packages(),
     dependency_links=[
-        "git+https://github.com/GeoNode/geonode.git@3.3.x#egg=geonode"
+        "git+https://github.com/GeoNode/geonode.git#egg=geonode"
     ],
     include_package_data=True,
 )

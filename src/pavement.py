@@ -54,9 +54,9 @@ from paver.easy import (
 from setuptools.command import easy_install
 
 try:
-    from UNMISS_geonode.local_settings import *
+    from unmiss_geonode.local_settings import *
 except ImportError:
-    from UNMISS_geonode.settings import *
+    from unmiss_geonode.settings import *
 
 try:
     from paver.path import pushd
@@ -410,7 +410,7 @@ def sync(options):
     sh(f"{settings} python -W ignore manage.py loaddata sample_admin.json")
     sh(f"{settings} python -W ignore manage.py loaddata default_oauth_apps.json")
     sh(f"{settings} python -W ignore manage.py loaddata initial_data.json")
-    sh(f"{settings} python -W ignore manage.py set_all_layers_alternate")
+    sh(f"{settings} python -W ignore manage.py set_all_datasets_alternate")
     sh(f"{settings} python -W ignore manage.py collectstatic --noinput")
 
 
@@ -936,8 +936,8 @@ def _reset():
     from geonode import settings
     path = os.path.join(settings.PROJECT_ROOT, 'development.db')
     sh(f"rm -rf {path}")
-    sh("rm -rf UNMISS_geonode/development.db")
-    sh("rm -rf UNMISS_geonode/uploaded/*")
+    sh("rm -rf unmiss_geonode/development.db")
+    sh("rm -rf unmiss_geonode/uploaded/*")
     _configure_data_dir()
 
 
