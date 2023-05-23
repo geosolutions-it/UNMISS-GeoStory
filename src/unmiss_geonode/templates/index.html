@@ -1,0 +1,178 @@
+{% extends "index.html" %}
+{% load markdownify %}
+{% load i18n %}
+{% load base_tags %}
+
+{% block content %}
+
+{% block geostories_home %}
+<style>
+    #unmiss-geostories-home h3 {
+        font-weight: bold;
+        padding: 1rem 0;
+        margin: 0;
+        font-size: 1.15rem;
+    }
+    .geostory-list {
+        padding: 0;
+        list-style: none;
+    }
+    .msgapi .carousel-caption {
+        position: static;
+        padding: 1rem;
+        text-shadow: none;
+        color: #e39545;
+        font-weight: bold;
+        font-size: 1.15rem;
+        text-align: left;
+    }
+    .msgapi .carousel-caption p {
+        margin: 0;
+    }
+    .unmiss-container .row {
+        margin: 2rem 0;
+    }
+    #unmiss-carousel img {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+</style>
+<div class="unmiss-container container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            {% blocktrans %}
+            UNMISS GeoStories portal is a platform for sharing outreach activities of the mission for the
+            implementation of its mandate in the form of storymap which describes a place, event, issue, trend or
+            pattern in a geographical context. It combines interractive maps with contents namely text, photos,
+            illustrations, video, and audio.</br>
+            The selected storymaps are created from different pillars, namely mission support, military and substantive
+            sections and presented below.
+            {% endblocktrans %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+
+            <div id="unmiss-carousel" class="carousel slide" data-ride="carousel">
+                <!-- Indicators -->
+                {% if slides.count > 1%}
+                <ol class="carousel-indicators">
+                    {% for slide in slides %}
+                    <li data-target="#unmiss-carousel" data-slide-to="{{ forloop.counter | add:'-1' }}"
+                        class="{% if forloop.counter == 1 %}active{%endif%}"></li>
+                    {% endfor %}
+                </ol>
+                {% endif %}
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    {% for slide in slides %}
+                    <div class="item {% if forloop.counter == 1 %}active{%endif%}">
+                        {% if not slide.hide_jumbotron_slide_content %}
+                        <div class="carousel-caption">
+                            {% with jumbotron_slide_content=slide.jumbotron_slide_content|markdownify %}
+                            {% trans jumbotron_slide_content %}
+                            {% endwith %}
+                        </div>
+                        {% endif %}
+                        {% if slide.jumbotron_slide_image %}
+                        <img src="{{ slide.jumbotron_slide_image_thumbnail.url }}" alt="{{ slide.slide_name }}">
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Left and right controls -->
+                {% if slides.count > 1%}
+                <a class="left carousel-control" href="#unmiss-carousel" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#unmiss-carousel" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div id="unmiss-geostories-home">
+                <h3>{% trans "GEOSTORIES" %}</h3>
+                <ol class="geostory-list">
+                </ol>
+                <div class="row text-center">
+                    <nav>
+                        <ul class="pagination"> </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var paginationclick;
+
+    window.addEventListener('DOMContentLoaded', function () {
+        const endpoint = '/api/v2/resources?filter{resource_type.in}=geostory&page_size=10';
+        const cardContainer = $('#unmiss-geostories-home .geostory-list')
+        const paginationContainer = $('#unmiss-geostories-home .pagination')
+
+        function buildGeoStoriesList(url) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                contentType: "application/json",
+                dataType: 'json',
+                success: function (result) {
+                    $('.spinning').remove()
+                    var $page_total = Math.ceil(result.total / result.page_size);
+                    var $startCount = (result.page_size * result.page) - result.page_size + 1
+                    cardContainer.attr("start", $startCount)
+                    result.resources.forEach(function (res) {
+                        const $newCard = $(`<li><a href=${res.embed_url} target="_blank">${res.title}</a></li>`)
+                        cardContainer.append($newCard)
+                    })
+                    if (result.links.previous !== null) {
+                        paginationContainer.append($(`
+                    <li>
+                      <a onClick="paginationclick('${result.links.previous}');"><strong><i class="fa fa-angle-left"></i></strong></a>
+                    </li>
+                  `))
+                    }
+                    paginationContainer.append($(`
+                  <li><a>{% trans "page" %} <span>${result.page}</span> {% trans "of" %} <span>${$page_total}</span></a>
+                  </li>
+                  `))
+                    if (result.links.next !== null) {
+                        paginationContainer.append($(`
+                      <li>
+                        <a onClick="paginationclick('${result.links.next}');"><strong><i class="fa fa-angle-right"></i></strong></a>
+                      </li>
+                    `))
+                    }
+                    return cardContainer, paginationContainer
+                },
+                error: function () {
+                    $('.spinning').remove()
+                    var $failedMessage = `<li class="error-message"><div>Could not fetch Geostories. Please try again later</div></li>`
+                    cardContainer.append($failedMessage)
+                }
+            });
+        }
+        buildGeoStoriesList(endpoint)
+        paginationclick = function (url) {
+            if (url !== null) {
+                cardContainer.empty()
+                paginationContainer.empty()
+                buildGeoStoriesList(url)
+            }
+        }
+    });
+
+</script>
+{% endblock geostories_home %}
+
+{% endblock %}
+{% block container %}{% endblock %}
+{% block ms_scripts %}{% endblock %}

@@ -1,0 +1,32 @@
+<!-- remove hero -->
+{% load i18n %}
+{% load static %}
+<style>
+    #gn-hero {
+        background-image: url('{% static "img/unmiss_background.png" %}');
+        background-size: auto 100%;
+        background-position: right center;
+        background-repeat: no-repeat;
+    }
+    #gn-hero .jumbotron {
+        width: calc(100% - 32px);
+        max-width: none;
+        text-align: left;
+        padding: 1rem 0;
+    }
+    #gn-hero .jumbotron .gn-hero-description h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+    }
+    #gn-hero .jumbotron .gn-hero-description p {
+        padding: 0 0.25rem;
+    }
+</style>
+<div id="gn-hero" class="gn-hero">
+    <div class="jumbotron">
+        <div class="gn-hero-description">
+            <h1>{% trans 'UNMISS GEOSTORIES' %}</h1>
+            <p>{% trans 'UNITED MISSION IN SOUTH SUDAN' %}</p>
+        </div>
+    </div>
+</div>
