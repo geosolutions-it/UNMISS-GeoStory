@@ -200,4 +200,4 @@ ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
     AUTHENTICATION_BACKENDS = ('unmiss_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
-    MIDDLEWARE += ('geonode.security.middleware.AdminAllowedMiddleware',)
+    MIDDLEWARE += ('unmiss_geonode.security.middleware.AdminAllowedMiddleware',)
