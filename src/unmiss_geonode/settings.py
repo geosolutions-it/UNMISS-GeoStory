@@ -199,5 +199,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ADMIN_IP_WHITELIST = [] if os.getenv('ADMIN_IP_WHITELIST') is None \
     else re.split(r' *[,|:;] *', os.getenv('ADMIN_IP_WHITELIST'))
 if len(ADMIN_IP_WHITELIST) > 0:
+    # For safety we keep using the custom backend and middlware in version 4.1.0, replacing the ones in GeoNode
+    AUTHENTICATION_BACKENDS = tuple([x for x in AUTHENTICATION_BACKENDS if x != 'geonode.security.backends.AdminRestrictedAccessBackend'])
     AUTHENTICATION_BACKENDS = ('unmiss_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
+    MIDDLEWARE = tuple(x for x in MIDDLEWARE if x != 'geonode.security.middleware.AdminAllowedMiddleware')
     MIDDLEWARE += ('unmiss_geonode.security.middleware.AdminAllowedMiddleware',)
