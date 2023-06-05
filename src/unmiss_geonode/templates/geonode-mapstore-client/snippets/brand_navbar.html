@@ -1,0 +1,12 @@
+{% extends "geonode-mapstore-client/snippets/brand_navbar.html" %}
+{% load static %}
+{% block extra_style %}
+<style>
+    #gn-brand-navbar {
+        border-bottom: 1px solid var(--gn-main-border-color);
+    }
+</style>
+{% endblock %}
+{% block logo_src %}
+{% static 'img/uninss.jpeg' %}
+{% endblock %}
