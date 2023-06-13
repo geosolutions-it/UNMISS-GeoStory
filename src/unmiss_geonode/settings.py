@@ -204,3 +204,11 @@ if len(ADMIN_IP_WHITELIST) > 0:
     AUTHENTICATION_BACKENDS = ('unmiss_geonode.security.backends.AdminRestrictedAccessBackend',) + AUTHENTICATION_BACKENDS
     MIDDLEWARE = tuple(x for x in MIDDLEWARE if x != 'geonode.security.middleware.AdminAllowedMiddleware')
     MIDDLEWARE += ('unmiss_geonode.security.middleware.AdminAllowedMiddleware',)
+    
+INSTALLED_APPS += ('allauth.socialaccount.providers.microsoft',)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'microsoft': {
+        'tenant': os.getenv('MICROSOFT_TENANT_ID')
+     }
+}
