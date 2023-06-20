@@ -1,2 +1,5 @@
-. $HOME/.override_env
+set -a
+. ./.env
+set +a
 paver $@
+
